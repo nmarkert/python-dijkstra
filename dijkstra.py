@@ -11,6 +11,8 @@ class DijkstraNode:
         self.prev = None
 
     def __eq__(self, other):
+        if other is None:
+            return False
         if type(other) != DijkstraNode:
             return self.obj == other
         else:
@@ -30,9 +32,9 @@ class Dijkstra(ABC):
         return graph
 
     def get_node_with_min_dist(self, graph: List[DijkstraNode]) -> DijkstraNode:
-        min_dist = math.inf
-        node = None
-        for n in graph:
+        node = graph[0]
+        min_dist = node.dist
+        for n in graph[1:]:
             if n.dist < min_dist:
                 min_dist = n.dist
                 node = n
@@ -44,8 +46,10 @@ class Dijkstra(ABC):
                 return n
         return None
 
-    def reconstruct_path(self, nodes, start_node, end_node):
-        node = self.get_dijkstra_node(nodes, end_node)
+    def reconstruct_path(self, nodes: List[DijkstraNode], start_node: Any, target_node: Any):
+        node = self.get_dijkstra_node(nodes, target_node)
+        if node is None:
+            return []
         path = [node.obj]
         while node != start_node:
             node = node.prev
@@ -53,65 +57,89 @@ class Dijkstra(ABC):
         path.reverse()
         return path
 
-    def reformat_output(self, nodes: List[DijkstraNode], output_format: str, start_node: Any = None,
-                        end_node: Any = None):
-        output = None
-        if output_format == 'dijkstra':
+    def reformat_output(self, nodes: List[DijkstraNode], output_format: str, start_node: Any,
+                        target_node: Any = None) -> Any:
+        try:
+            hash(start_node)
+        except TypeError:
+            as_dict = False
             output = []
+        else:
+            as_dict = True
+            output = {}
+
+        def append_output(key, value):
+            if as_dict:
+                output[key] = value
+            else:
+                output.append((key, value))
+
+        if output_format == 'dijkstra':
             for node in nodes:
                 prev = None
                 if node.prev is not None:
                     prev = node.prev.obj
-                output.append((node.obj, node.dist, prev))
+                append_output(node.obj, (node.dist, prev))
 
-        elif output_format == 'single_path':
-            output = self.reconstruct_path(nodes, start_node, end_node)
-
-        elif output_format == 'all_paths':
-            output = []
+        elif output_format == 'paths':
             for node in nodes:
-                output.append((node.obj, self.reconstruct_path(nodes, start_node, node)))
+                append_output(node.obj, self.reconstruct_path(nodes, start_node, node.obj))
 
-        elif output_format == 'costs':
-            output = []
+        elif output_format == 'paths+costs':
             for node in nodes:
-                output.append((node.obj, node.dist))
+                append_output(node.obj, (self.reconstruct_path(nodes, start_node, node.obj), node.dist))
+
+        elif output_format == 'target_path':
+            if target_node is None:
+                raise ValueError('target_path is not allowed as output_format if no target is specified!')
+            output = self.reconstruct_path(nodes, start_node, target_node)
+
+        else:
+            raise ValueError(str(output_format) + ' is no valid output format!')
 
         return output
 
-    def dijkstra_search(self, start, end=None, output_format='dijkstra'):
-        graph = self.init_graph(start)
+    def dijkstra_search(self, start: Any, target: Any = None, output_format: str = 'dijkstra'):
+        unvisited = self.init_graph(start)
         visited = []
 
-        while len(graph) > 0:
-            u = self.get_node_with_min_dist(graph)
-            graph.remove(u)
+        while len(unvisited) > 0:
+            u = self.get_node_with_min_dist(unvisited)
+            if u.dist == math.inf:
+                # Node with min dist has inf dist -> graph is not fully connected
+                break
+
+            unvisited.remove(u)
             visited.append(u)
-            if end is not None and u == end:
+
+            # Early Stopping if target node is found
+            if u == target:
                 break
 
             for neighbor in self.neighbors(u.obj):
-                v = self.get_dijkstra_node(graph, neighbor)
+                v = self.get_dijkstra_node(unvisited, neighbor)
                 if v is None:
+                    # neighbor was already visited
                     continue
+
                 alt = u.dist + self.weight(u.obj, v.obj)
                 if alt < v.dist and u.dist != math.inf:
                     v.dist = alt
                     v.prev = u
 
-        return self.reformat_output(visited, output_format, start, end)
+        return self.reformat_output(visited, output_format, start, target)
 
     @abstractmethod
-    def neighbors(self, node):
+    def neighbors(self, node: Any) -> List[Any]:
         """ Get all neighbor nodes of the given node """
         raise NotImplementedError
 
     @abstractmethod
-    def all_nodes(self):
+    def all_nodes(self) -> List[Any]:
         """ Get all nodes in the graph """
         raise NotImplementedError
 
     @abstractmethod
-    def weight(self, node1, node2):
+    def weight(self, node1: Any, node2: Any) -> float | int:
         """ Get the weight for going from node1 to node2 (i.e. the distance) """
         raise NotImplementedError
