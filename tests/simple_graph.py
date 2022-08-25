@@ -1,7 +1,7 @@
 import math
 from typing import List, Tuple
 
-import dijkstra
+import pydijkstra
 
 
 class Node:
@@ -32,7 +32,7 @@ class Edge:
         return str(self)
 
 
-class Graph(dijkstra.Dijkstra):
+class Graph(pydijkstra.Dijkstra):
 
     def __init__(self):
         self.nodes = list()

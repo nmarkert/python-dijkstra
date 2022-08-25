@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pydijkstra"
+version = "0.1.0"
+description = "Read the latest Real Python tutorials"
+readme = "README.md"
+authors = [{ name = "Niklas Markert", email = "niklas.markert@outlook.de" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["dijkstra", "graph", "search"]
+dependencies = [
+]
+requires-python = ">=3.9"
+
+[project.urls]
+Homepage = "https://github.com/nmarkert/python-dijkstra"
