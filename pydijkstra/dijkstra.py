@@ -79,13 +79,13 @@ class Dijkstra(ABC):
                 prev = None
                 if node.prev is not None:
                     prev = node.prev.obj
-                append_output(node.obj, (node.dist, prev))
+                append_output(node.obj, {'dist': node.dist, 'prev': prev})
 
-        elif output_format == 'paths':
+        elif output_format == 'path':
             for node in nodes:
                 append_output(node.obj, self.reconstruct_path(nodes, start_node, node.obj))
 
-        elif output_format == 'paths+costs':
+        elif output_format == 'path+dist':
             for node in nodes:
                 append_output(node.obj, (self.reconstruct_path(nodes, start_node, node.obj), node.dist))
 
