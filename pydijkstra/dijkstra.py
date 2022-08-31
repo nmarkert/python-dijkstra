@@ -74,7 +74,7 @@ class Dijkstra(ABC):
             else:
                 output.append((key, value))
 
-        if output_format == 'pydijkstra':
+        if output_format == 'dijkstra':
             for node in nodes:
                 prev = None
                 if node.prev is not None:
@@ -99,7 +99,7 @@ class Dijkstra(ABC):
 
         return output
 
-    def dijkstra_search(self, start: Any, target: Any = None, output_format: str = 'pydijkstra'):
+    def dijkstra_search(self, start: Any, target: Any = None, output_format: str = 'dijkstra'):
         unvisited = self.init_graph(start)
         visited = []
 

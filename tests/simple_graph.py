@@ -76,23 +76,3 @@ class Graph(pydijkstra.Dijkstra):
             if e.start == node1 and e.end == node2:
                 return e.weight
         return math.inf
-
-
-if __name__ == '__main__':
-    # Test graph: https://de.wikipedia.org/wiki/Dijkstra-Algorithmus#/media/Datei:Dijkstra_Animation.gif
-    graph = Graph()
-    n1, n2, n3, n4, n5, n6 = graph.add_nodes(6, ['1', '2', '3', '4', '5', '6'])
-    graph.add_edge(n1, n2, 7)
-    graph.add_edge(n1, n3, 9)
-    graph.add_edge(n1, n6, 14)
-    graph.add_edge(n2, n3, 10)
-    graph.add_edge(n2, n4, 15)
-    graph.add_edge(n3, n4, 11)
-    graph.add_edge(n3, n6, 2)
-    graph.add_edge(n4, n5, 6)
-    graph.add_edge(n5, n6, 9)
-    out1 = graph.dijkstra_search(n1)
-    print(out1)
-
-
-
