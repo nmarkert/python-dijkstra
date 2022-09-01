@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pydijkstra"
-version = "0.1.0"
-description = "Read the latest Real Python tutorials"
+version = "1.0.0"
+description = "Package for easily applicable Dijkstra Algorithm."
 readme = "README.md"
 authors = [{ name = "Niklas Markert", email = "niklas.markert@outlook.de" }]
 license = { file = "LICENSE" }
@@ -14,7 +14,7 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
 ]
-keywords = ["dijkstra", "graph", "search"]
+keywords = ["dijkstra", "graph", "pathfinding"]
 dependencies = [
 ]
 requires-python = ">=3.9"
