@@ -2,10 +2,9 @@
 
 This python package provides an implementation of the  Dijkstra Search Algorithm for any kind of graphs.
 The focus of this realization lies on the usability. <br>
-If you have already written your own class which represents some sort of graph, and you want to 
-use the dijkstra algorithm for path searching in this graph, this package is extremely easy to 
-integrate. You don't have to transform your graph into another special search graph or something.
-The only things you have to do, is inheriting from the provided class and override some methods.
+If you have your own class which represents some sort of graph, and you want to use the dijkstra algorithm for finding the shortest paths, this package is extremely easy to integrate. 
+You don't have to transform your graph into another special search graph or anything else.
+The only things you have to do, is inheriting from the provided class and implementing the abstract methods.
 
 ## How to Use
 **Install Package**
@@ -44,7 +43,7 @@ dijkstra_search(start: Any,
 ```
 - (param) **start**: Node to start the dijkstra search from.
 - (param) **target**: Target node in order to perform early stopping.
-- (param) **output_format**: String which defines the format of the output. More on this at [Output Formats](#markdown-header-output-formats).
+- (param) **output_format**: String which defines the format of the output. More on this at [Output Formats](#output-formats).
 - (return) Result of the dijkstra search based on the output_format.
 
 ### Output Formats
