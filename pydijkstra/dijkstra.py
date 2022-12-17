@@ -5,6 +5,8 @@ from typing import List, Any
 
 
 class DijkstraNode:
+    __slots__ = ("obj", "dist", "prev")
+
     def __init__(self, obj):
         self.obj = obj
         self.dist = math.inf
@@ -20,6 +22,7 @@ class DijkstraNode:
 
 
 class Dijkstra(ABC):
+    __slots__ = ()
 
     @staticmethod
     def __get_node_with_min_dist(graph: List[DijkstraNode]) -> DijkstraNode:
